@@ -9,6 +9,10 @@ const Player = (props) => {
 
   const searchPlayer = () => {
     if (searchValue == "") {
+      props.showSnackbar({
+        message: "empty Search Showing All Data",
+        variant: "warning",
+      });
       setPlayers(props.player);
     } else {
       let search_data = props.player;
@@ -18,6 +22,10 @@ const Player = (props) => {
           data.push(search_data[d]);
         }
       }
+      props.showSnackbar({
+        message: "showing Search Data",
+        variant: "info",
+      });
       setPlayers(data);
     }
   };
