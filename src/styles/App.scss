@@ -1,0 +1,24 @@
+body {
+  font-family: $font-family;
+  background: #f7edd5;
+}
+
+.container {
+  max-width: 900px;
+}
+
+a {
+  display: inline-block;
+  text-decoration: none;
+}
+
+input {
+  outline: none !important;
+}
+
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  font-weight: 700;
+}
