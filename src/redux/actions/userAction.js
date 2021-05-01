@@ -1,103 +1,80 @@
 import store from "../store";
 
-export const createNewUser = (payload) => (dispatch) => {
-  let emails = store.getState().user.emails ? store.getState().user.emails : [];
-  let users = store.getState().user.users;
-  let email = payload.email;
-
-  // console.log({ emails });
-  if (emails.indexOf(email) !== -1) {
-    dispatch({
-      type: "SHOW_SNACKBAR",
-      message: "USER ALREADY EXISTS",
-      variant: "warning",
-    });
-  } else {
-    users[email] = payload;
-    emails.push(email);
-    let data = {
-      emails: emails,
-      users: users,
-    };
-    dispatch({
-      type: "SHOW_SNACKBAR",
-      message: "NEW USER CREATION SUCCESSFUL",
-      variant: "success",
-    });
-    dispatch({
-      type: "NEW_USER",
-      payload: data,
-    });
-    dispatch({ type: "LOGIN_USER", payload: payload });
-  }
-};
-
-export const signInUser = (payload) => (dispatch) => {
-  let users = store.getState().user.users ? store.getState().user.users : {};
-  let emails = store.getState().user.emails ? store.getState().user.emails : [];
-  let email = payload.email;
-  let password = payload.password;
-
-  // console.log({ emails });
-
-  if (emails.indexOf(email) !== -1) {
-    let user = users[email];
-    if (user.password === password) {
-      dispatch({
-        type: "SHOW_SNACKBAR",
-        message: "LOGIN SUCCESSFULL",
-        variant: "success",
-      });
-      dispatch({ type: "LOGIN_USER", payload: user });
-    } else {
-      dispatch({
-        type: "SHOW_SNACKBAR",
-        message: "PASSWORD INCORRECT",
-        variant: "error",
-      });
-    }
-  } else {
-    dispatch({
-      type: "SHOW_SNACKBAR",
-      message: "USER NOT FOUND",
-      variant: "error",
-    });
-  }
-};
-
-export const signOutUser = (payload) => (dispatch) => {
+export const addTeam = (payload) => (dispatch) => {
+  let teams = store.getState().user.teams;
+  teams.push(payload);
+  dispatch({ type: "UPDATE_TEAM", payload: teams });
   dispatch({
     type: "SHOW_SNACKBAR",
-    message: "USER LOGGED OUT",
-    variant: "info",
+    message: "NEW TEAM ADDED",
+    variant: "success",
   });
-  dispatch({ type: "LOGOUT_USER" });
+  window.localStorage.setItem("team", JSON.stringify(teams));
 };
 
-export const viewProfile = (payload) => (dispatch) => {
+export const removeTeam = (payload) => (dispatch) => {
+  let teams = store.getState().user.teams;
+  let players = store.getState().user.player;
+  let value = teams[payload];
+  teams = teams.filter((item) => item !== value);
+  players = players.filter((item) => item.team !== value.name);
+
   dispatch({
-    type: "SHOW_SNACKBAR",
-    message: "SHOWING USER PROFILE",
-    variant: "info",
+    type: "UPDATE_PLAYER",
+    payload: { teams, players },
   });
-  dispatch({ type: "VIEW_PROFILE" });
-};
-
-export const closeProfile = (payload) => (dispatch) => {
-  dispatch({ type: "CLOSE_PROFILE" });
-};
-
-export const updateUserData = (payload) => (dispatch) => {
-  let users = store.getState().user.users ? store.getState().user.users : {};
-
-  let data = payload;
-  let email = payload.email;
-
-  users[email] = data;
-  dispatch({ type: "UPDATE_USER", payload: users });
   dispatch({
     type: "SHOW_SNACKBAR",
-    message: "USER DETAILS UPDATED",
+    message: "TEAM DELETED SUCCESSFULLY",
+    variant: "success",
+  });
+  window.localStorage.setItem("team", JSON.stringify(teams));
+  window.localStorage.setItem("player", JSON.stringify(players));
+};
+
+export const addPlayer = (payload) => (dispatch) => {
+  let teams = store.getState().user.teams;
+  let players = store.getState().user.player;
+  let index = payload.index;
+  let player_name = payload.name;
+
+  teams[index].players.push(player_name);
+  players.push({ name: player_name, team: teams[index].name });
+
+  dispatch({
+    type: "UPDATE_PLAYER",
+    payload: { teams: teams, players: players },
+  });
+  dispatch({
+    type: "SHOW_SNACKBAR",
+    message: "TEAM DELETED SUCCESSFULLY",
+    variant: "success",
+  });
+  window.localStorage.setItem("team", JSON.stringify(teams));
+  window.localStorage.setItem("player", JSON.stringify(players));
+};
+
+export const removePlayer = (payload) => (dispatch) => {
+  let teams = store.getState().user.teams;
+  let value = teams[payload];
+  teams = teams.filter((item) => item !== value);
+  dispatch({ type: "UPDATE_TEAM", payload: teams });
+  dispatch({
+    type: "SHOW_SNACKBAR",
+    message: "TEAM DELETED SUCCESSFULLY",
+    variant: "success",
+  });
+};
+export const updateFromLocalStorage = (payload) => (dispatch) => {
+  let teams = JSON.parse(window.localStorage.getItem("team"));
+  let players = JSON.parse(window.localStorage.getItem("player"));
+  dispatch({
+    type: "UPDATE_FROM_LOCAL_STORAGE",
+    payload: { teams: teams ? teams : [], players: players ? players : [] },
+  });
+  dispatch({
+    type: "SHOW_SNACKBAR",
+    message: "DATA LOADED SUCCESSFULLY",
     variant: "success",
   });
 };
