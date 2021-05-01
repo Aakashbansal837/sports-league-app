@@ -1,9 +1,10 @@
 const initialState = {
-  users: {},
-  currentUser: {},
-  emails: [],
-  is_logged_in: false,
-  view_profile: false,
+  player: [],
+  teams: [],
+
+  // structure
+  // player: [{ name: "default", team: "team 1" }],
+  // teams: [{ name: "default", players: ["player 1", "player 2"] }],
 };
 
 const userReducer = (state = initialState, action) => {
@@ -11,35 +12,24 @@ const userReducer = (state = initialState, action) => {
     case "NEW_USER":
       return {
         ...state,
-        users: action.payload.users,
-        emails: action.payload.emails,
+        player: action.payload.player,
       };
-    case "LOGIN_USER":
+    case "UPDATE_TEAM":
       return {
         ...state,
-        is_logged_in: true,
-        currentUser: action.payload,
+        teams: action.payload,
       };
-    case "LOGOUT_USER":
+    case "UPDATE_PLAYER":
       return {
         ...state,
-        is_logged_in: false,
-        view_profile: false,
+        teams: action.payload.teams,
+        player: action.payload.players,
       };
-    case "UPDATE_USER":
+    case "UPDATE_FROM_LOCAL_STORAGE":
       return {
         ...state,
-        users: action.payload,
-      };
-    case "VIEW_PROFILE":
-      return {
-        ...state,
-        view_profile: true,
-      };
-    case "CLOSE_PROFILE":
-      return {
-        ...state,
-        view_profile: false,
+        teams: action.payload.teams,
+        player: action.payload.players,
       };
 
     default:
