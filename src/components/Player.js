@@ -1,11 +1,20 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-
+import { updateFromLocalStorage } from "../redux/actions/userAction";
 import { showSnackbar } from "../redux/actions/snackbarAction";
 
 const Player = (props) => {
   const [players, setPlayers] = React.useState(props.player);
   const [searchValue, setSearchValue] = React.useState("");
+
+  useEffect(() => {
+    props.updateFromLocalStorage();
+  }, []);
+
+  useEffect(() => {
+    setPlayers(props.player);
+    console.log("players", props.player);
+  }, [props.player]);
 
   const searchPlayer = () => {
     if (searchValue == "") {
@@ -81,6 +90,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   showSnackbar,
+  updateFromLocalStorage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);
