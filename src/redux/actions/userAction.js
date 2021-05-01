@@ -47,7 +47,7 @@ export const addPlayer = (payload) => (dispatch) => {
   });
   dispatch({
     type: "SHOW_SNACKBAR",
-    message: "TEAM DELETED SUCCESSFULLY",
+    message: "PLAYER ADDED SUCCESSFULLY",
     variant: "success",
   });
   window.localStorage.setItem("team", JSON.stringify(teams));
@@ -56,14 +56,25 @@ export const addPlayer = (payload) => (dispatch) => {
 
 export const removePlayer = (payload) => (dispatch) => {
   let teams = store.getState().user.teams;
-  let value = teams[payload];
-  teams = teams.filter((item) => item !== value);
-  dispatch({ type: "UPDATE_TEAM", payload: teams });
+  let players = store.getState().user.player;
+
+  console.log({ payload });
+  let player_name = payload.name;
+  let value = teams[payload.index].players;
+
+  value = value.filter((item) => item !== player_name);
+  teams[payload.index].players = value;
+  players = players.filter((item) => item.name !== player_name);
+
+  console.log({ teams, players });
+  dispatch({ type: "UPDATE_PLAYER", payload: { teams, players } });
   dispatch({
     type: "SHOW_SNACKBAR",
-    message: "TEAM DELETED SUCCESSFULLY",
+    message: "PLAYER DELETED SUCCESSFULLY",
     variant: "success",
   });
+  window.localStorage.setItem("team", JSON.stringify(teams));
+  window.localStorage.setItem("player", JSON.stringify(players));
 };
 export const updateFromLocalStorage = (payload) => (dispatch) => {
   let teams = JSON.parse(window.localStorage.getItem("team"));
