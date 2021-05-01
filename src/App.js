@@ -5,11 +5,13 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Homepage from "./components/Homepage";
 import Team from "./components/Team";
 import Player from "./components/Player";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <div className="App">
       <Router>
+        <Navbar />
         <Route exact path="/" component={Homepage} />
         <Route exact path="/teams" component={Team} />
         <Route exact path="/players" component={Player} />
