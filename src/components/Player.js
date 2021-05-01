@@ -32,18 +32,18 @@ const Player = (props) => {
 
   return (
     <div className="player">
-      <div class="input-group mb-3">
+      <div className="input-group mb-3">
         <input
           type="text"
-          class="form-control"
+          className="form-control"
           placeholder="Player's name"
           aria-label="Player's name"
           aria-describedby="button-addon2"
           onChange={(e) => setSearchValue(e.target.value)}
         />
-        <div class="input-group-append">
+        <div className="input-group-append">
           <button
-            class="btn btn-outline-secondary"
+            className="btn btn-outline-secondary"
             type="button"
             id="button-addon2"
             onClick={() => searchPlayer()}
@@ -52,7 +52,7 @@ const Player = (props) => {
           </button>
         </div>
       </div>
-      <table class="table table-bordered">
+      <table className="table table-bordered">
         <thead>
           <tr>
             <th scope="col">#</th>
